@@ -1,0 +1,40 @@
+const express = require('express')
+const cors = require('cors')
+const bodyParser = require('body-parser')
+
+const bodyParserJSON = bodyParser.json()
+
+
+//criando um objeto do express para criar API
+const app = express()
+
+//cofigurações do CORS da API
+const corsOptions = {
+
+    origin: ['*'],  //configuração de origem da requisição (IP ou dominio)
+    methods: 'GET, POST, PUT, DELETE, OPTIONS',  //configuração dos verbo que serão utilizados na API
+    allowedHeaders: ['Content-type', 'Authorization'] // configurações de permissoes
+    //tipo de dados //autorização de acesso
+}
+
+
+//aplica as configurações do CORS no app (EXPRESS)
+app.use(cors(corsOptions))
+
+const controllerFilme = require('./controller/filme/controller_filmes.js')
+
+app.post('/v1/senai/locadora/filme', bodyParserJSON, async function (request, response) {
+
+    //Recebendo o body da requisição
+    let dados = request.body
+
+    let result = await controllerFilme.inserirNovoFilme(dados)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+
+app.listen(8080, function () {
+
+    console.log('API aguardando novas requisições ...')
+})
