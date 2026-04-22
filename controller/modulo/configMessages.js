@@ -35,5 +35,6 @@ const SUCCESS_CREATED_ITEM = { status: true, status_code: 201, message: 'Item in
 module.exports = {
     DEFAULT_MESSAGE,
     ERROR_BAD_REQUEST,
+    ERROR_INTERNAL_SERVER_MODEL,
     SUCCESS_CREATED_ITEM
 }

@@ -34,6 +34,7 @@ const inserirNovoFilme = async function (filme) {
         customMessage.ERROR_BAD_REQUEST.field = '[VALOR] INVÁLIDO'
     } else if (filme.avaliacao == undefined || isNaN(filme.avaliacao) || filme.avaliacao.length > 3) {
         customMessage.ERROR_BAD_REQUEST.field = '[AVALIAÇÃO] INVÁLIDO'
+        //Encaminha os dados dos filmes  para o dao inserir no db 
     } else {
         let result = await filmeDAO.insertFilme(filme)
 
@@ -46,7 +47,9 @@ const inserirNovoFilme = async function (filme) {
             customMessage.DEFAULT_MESSAGE.status_code = customMessage.ERROR_INTERNAL_SERVER_MODEL.status_code
             customMessage.DEFAULT_MESSAGE.message = customMessage.ERROR_INTERNAL_SERVER_MODEL.message
         }
+        return customMessage.DEFAULT_MESSAGE
     }
+
 }
 
 //Função para atualizar um filme existente
@@ -78,7 +81,7 @@ module.exports = {
     excluirFilme
 }
 
-//67🫳🫴
+
 
 
 
