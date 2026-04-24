@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Objetivo; arquivo resopnsavel pela validção, tratamento, manipulção de dados
+ * Objetivo; arquivo responsavel pela validação, tratamento, manipulção de dados
  * para realizar o CRUD de filme
  *            
  * Data:17/04/2026
@@ -20,46 +20,43 @@ const inserirNovoFilme = async function (filme, contentType) {
     //Criar uma copia dos JSON do arquivo de configuração de mensagens
     let customMessage = JSON.parse(JSON.stringify(configMessages))
 
-    try{
-        if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
+    try {
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-    
+
 
             let validar = await validarDados(filme)
-        
-            if(validar){
-        
+
+            if (validar) {
+
                 return validar
-            
+
             } else {
-        
+
                 let result = await filmeDAO.insertFilme(filme)
-        
+
                 if (result) {
                     customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_CREATED_ITEM.status
                     customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_CREATED_ITEM.status_code
                     customMessage.DEFAULT_MESSAGE.message = customMessage.SUCCESS_CREATED_ITEM.message
-        
+
                     return customMessage.DEFAULT_MESSAGE
                 } else {
                     return customMessage.ERROR_INTERNAL_SERVER_MODEL
                 }
-                
-            }
-            
-            } else {
-                return customMessage.ERROR_CONTENT_TYPE
-            }
-        
-            }catch(error){
-                return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER
 
             }
+
+        } else {
+            return customMessage.ERROR_CONTENT_TYPE
+        }
+
+    } catch (error) {
+        return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER
 
     }
 
-    
-        
+}
 //Função para atualizar um filme existente
 const atualizarFilme = async function () {
 
@@ -67,6 +64,35 @@ const atualizarFilme = async function () {
 
 //Função para retornar todos os filmes existentes
 const listarFilme = async function () {
+
+    let customMessage = JSON.parse(JSON.stringify(configMessages))
+
+    try {
+        //Chama função do DAO para retornar a lista de filmes do banco de dados
+        let result = await filmeDAO.selectAllFilme()
+
+        //Validação para verificar se o DAO conseguio processar o Srcipt no banco de dados
+        if (result) {
+             
+            //Validação para verificar se o conteudo do array tem dados de retorno ou se esta vazio
+            if (result.length > 0) {
+
+                customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_RESPONSE.status
+                customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_RESPONSE.status_code
+                customMessage.DEFAULT_MESSAGE.response.filme = result
+
+                return customMessage.DEFAULT_MESSAGE
+
+            } else {
+                return customMessage.ERROR_NOT_FOUND// Erro 404
+            }
+
+        } else {
+            return customMessage.ERROR_INTERNAL_SERVER_MODEL// Erro 500 (model)
+        }
+    } catch (error) {
+        return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER // Erro 500 (controller)
+    }
 
 }
 
@@ -119,11 +145,3 @@ module.exports = {
     buscarFilme,
     excluirFilme
 }
-
-
-
-
-
-
-
-

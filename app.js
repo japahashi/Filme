@@ -36,6 +36,16 @@ app.post('/v1/senai/locadora/filme', bodyParserJSON, async function (request, re
     response.json(result)
 })
 
+
+app.get('/v1/senai/locadora/filme', async function (request, response) {
+
+    let result = await controllerFilme.listarFilme()
+
+    response.status(result.status_code)
+    response.json(result)
+    
+})
+
 app.listen(8080, function () {
 
     console.log('API aguardando novas requisições ...')

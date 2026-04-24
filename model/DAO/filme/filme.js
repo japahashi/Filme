@@ -22,7 +22,7 @@ const knexConection = knex(knexdatabaseConfig.development)
 const insertFilme = async function (filme) {
 
 
-    try{
+    try {
         let sql = `insert into tbl_filme(
             nome,
             sinopse,
@@ -40,26 +40,25 @@ const insertFilme = async function (filme) {
             '${filme.valor}',
             if('${filme.avaliacao}' = '', null, '${filme.avaliacao}')
         );`
-        
+
         //Encaminha para o banco de dados o scriptSQL
         let result = await knexConection.raw(sql)
-        
-        if(result){
-        
+
+        if (result) {
+
             return true
-        
-        }else{
-        
+
+        } else {
+
             return false
-        
+
         }
 
-    }catch(error){
+    } catch (error) {
         return false
 
     }
 
-    
 
 }
 
@@ -69,6 +68,29 @@ const updateFilme = async function (filme) {
 
 //Função para retonar todos os dados de filmes do banco de dados
 const selectAllFilme = async function () {
+
+    try {
+
+        //Script sql para listar todos os filmes
+        let sql = ' select * from tbl_filme order by id desc'
+
+        //Executa no banco de dados o Script e aguarda o restorno do banco, pode ser um erro (false) ou um array com os dados
+        let result = await knexConection.raw(sql)
+
+        // Validação para verificar se o retorno do banco de daos é um array ou um boolean (false)
+        if (Array.isArray(result)) {
+
+            return result[0]//Retorna somente o indice com lista de filmes
+
+        } else {
+
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
+
 }
 
 //Função para retonar um filme pelo id
