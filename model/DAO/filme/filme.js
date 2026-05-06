@@ -23,6 +23,8 @@ const insertFilme = async function (filme) {
 
 
     try {
+
+        //let sql = 'Call insertFilme(filme)'
         let sql = `insert into tbl_filme(
             nome,
             sinopse,
@@ -46,7 +48,7 @@ const insertFilme = async function (filme) {
 
         if (result) {
 
-            return true
+            return result[0].insertId // Retorna o id gerado no insert
 
         } else {
 
@@ -118,6 +120,22 @@ const selectByIdFilme = async function (id) {
 
 //Função para excluir um filme filtrando pelo id
 const deleteFilme = async function (id) {
+
+    try {
+        let sql = `delete from tbl_filme where id=${id}`
+
+        let result = await knexConection.raw(sql)
+
+        if (result) {
+            return true
+
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+
+    }
 }
 
 module.exports = {

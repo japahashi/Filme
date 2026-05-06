@@ -33,13 +33,14 @@ const inserirNovoFilme = async function (filme, contentType) {
 
             } else {
 
-                let result = await filmeDAO.insertFilme(filme)
+                let result = await filmeDAO.insertFilme(await tratarDados(filme))
 
                 if (result) {
+                    filme.id = result //cria o id no json do filme e adciona o id gerado no dao
                     customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_CREATED_ITEM.status
                     customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_CREATED_ITEM.status_code
-                    customMessage.DEFAULT_MESSAGE.response.count = result.length
                     customMessage.DEFAULT_MESSAGE.message = customMessage.SUCCESS_CREATED_ITEM.message
+                    customMessage.DEFAULT_MESSAGE.response = filme
 
                     return customMessage.DEFAULT_MESSAGE
                 } else {
@@ -81,6 +82,7 @@ const listarFilme = async function () {
                 customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_RESPONSE.status
                 customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_RESPONSE.status_code
                 customMessage.DEFAULT_MESSAGE.response.filme = result
+                customMessage.DEFAULT_MESSAGE.response.count = result.length
 
                 return customMessage.DEFAULT_MESSAGE
 
@@ -143,7 +145,34 @@ const buscarFilme = async function (id) {
 }
 
 //Função para excluir um filme
-const excluirFilme = async function () {
+const excluirFilme = async function (id) {
+
+    let customMessage = JSON.parse(JSON.stringify(configMessages))
+
+    try {
+        //Chama a função de buscar fime para validar se o filme existe
+        let resultBuscarFilme = await buscarFilme(id)
+
+        if (resultBuscarFilme.status) {
+            let result = await filmeDAO.deleteFilme(id)
+
+            if (result) {
+                return customMessage.SUCCESS_DELETED_ITEM
+
+            } else {
+                return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER
+            }
+
+        } else {
+            resultBuscarFilme
+        }
+
+    } catch (error) {
+
+        return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER
+
+    }
+
 
 }
 
@@ -173,9 +202,21 @@ const validarDados = async function (filme) {
         customMessage.ERROR_BAD_REQUEST.field = '[AVALIAÇÃO] INVÁLIDO'
         return customMessage.ERROR_BAD_REQUEST
     } else {
-
         return false
     }
+}
+
+const tratarDados = async function (filme) {
+
+    filme.nome = filme.nome.replaceAll("'", "")
+    filme.sinopse = filme.sinopse.replaceAll("'", "")
+    filme.capa = filme.capa.replaceAll("'", "")
+    filme.data_lancamento = filme.data_lancamento.replaceAll("'", "")
+    filme.duracao = filme.duracao.replaceAll("'", "")
+    filme.valor = filme.valor.replaceAll("'", "")
+    filme.avaliacao = filme.avaliacao.replaceAll("'", "")
+
+    return filme
 }
 
 module.exports = {

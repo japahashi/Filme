@@ -38,6 +38,10 @@ const ERROR_NOT_FOUND = { status: false, status_code: 404, message: 'Não foram 
 
 const SUCCESS_RESPONSE = { status: true, status_code: 200 }
 
+const SUCCESS_DELETED_ITEM = { status: true, status_code: 200, message: 'Item excluido com sucessso' }
+
+
+
 
 
 module.exports = {
@@ -48,5 +52,6 @@ module.exports = {
     ERROR_CONTENT_TYPE,
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_NOT_FOUND,
-    SUCCESS_RESPONSE
+    SUCCESS_RESPONSE,
+    SUCCESS_DELETED_ITEM
 }
