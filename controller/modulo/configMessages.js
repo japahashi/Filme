@@ -22,7 +22,9 @@ const DEFAULT_MESSAGE = {
 
 //Mensagens de erro do projeto de filmes
 const ERROR_BAD_REQUEST = {
-    status: false, status_code: 400, message: 'Não foi possivel processar a requisição devido a erro de entrada de dados.'
+    status: false,
+    status_code: 400, 
+    message: 'Não foi possivel processar a requisição devido a erro de entrada de dados.'
 }
 // 
 const ERROR_INTERNAL_SERVER_MODEL = { status: false, status_code: 500, message: 'Não foi possivel processar a requisição devido a um erro interno no servidor [MODEL].' }
