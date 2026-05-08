@@ -60,8 +60,54 @@ const inserirNovoFilme = async function (filme, contentType) {
 
 }
 //Função para atualizar um filme existente
-const atualizarFilme = async function () {
+const atualizarFilme = async function (filme, id, contentType) {
 
+    let customMessage = JSON.parse(JSON.stringify(configMessages))
+
+    try {
+        //Validação para verificar se o conteúdo do Body é um JSON
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+
+            //Chama a função para buscar o filme e validar se o ID est correto, Se o ID existe no BD e se o filme existe
+            let resultBuscarFilme = await buscarFilme(id)
+            if (resultBuscarFilme.status) {
+
+                //Chama a função para validar os dados no
+                let validar = await validarDados(filme)
+                if (!validar) {
+
+                    //Adiciona um atributo ID no JSON de filme, para enviar ao DAO um único objeto
+                    filme.id = Number(id)
+
+                    //Chama a função para atualizar o filme no BD
+                    let result = await filmeDAO.updateFilme(await tratarDados(filme))
+
+                    if (result) {
+                        customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_UPDATE_ITEM.status
+                        customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_UPDATE_ITEM.status_code
+                        customMessage.DEFAULT_MESSAGE.message = customMessage.SUCCESS_UPDATE_ITEM.message
+                        customMessage.DEFAULT_MESSAGE.response = filme
+
+                        return customMessage.DEFAULT_MESSAGE //200 (atualizado)
+
+                    } else {
+                        return customMessage.ERROR_INTERNAL_SERVER_MODEL  //500 (Model)   
+                    }
+                } else {
+                    return validar  //400 de validação dos campos do banco de dados
+                }
+
+            } else {
+                return resultBuscarFilme //400(ID inválido) ou 404(não encontrado) ou 500
+            }
+        } else {
+            return customMessage.ERROR_CONTENT_TYPE
+        }
+
+
+    } catch (error) {
+        return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER  //500(controller)
+    }
 }
 
 //Função para retornar todos os filmes existentes
