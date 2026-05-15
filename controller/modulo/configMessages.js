@@ -32,7 +32,7 @@ const ERROR_INTERNAL_SERVER_MODEL = { status: false, status_code: 500, message: 
 //Mensagem de sucesso do projeto de filmes
 const SUCCESS_CREATED_ITEM = { status: true, status_code: 201, message: 'Item inserido com sucesso!' }
 
-const ERROR_CONTENT_TYPE = { status: false, status_code: 415, message: 'Não foi possivel processar a informação de dados encaminhados pois n~eo é suportdo pelo servidor, apenas deve ser utilizado, JSON. ' }
+const ERROR_CONTENT_TYPE = { status: false, status_code: 415, message: 'Não foi possivel processar a informação de dados encaminhados pois não é suportdo pelo servidor, apenas deve ser utilizado, JSON. ' }
 
 const ERROR_INTERNAL_SERVER_CONTROLLER = { status: false, status_code: 500, message: 'Não foi possivel processar a requisição devido a um erro interno no servidor [CONTROLLER]' }
 
