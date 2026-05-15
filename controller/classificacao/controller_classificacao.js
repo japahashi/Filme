@@ -2,7 +2,7 @@ const configMessages = require('../modulo/configMessages.js')
 
 const classificacaoDAO = require('../../model/DAO/classificacao/classificacao.js')
 
-const inserirNovaClassificao = async function (classificacao, contentType) {
+const inserirNovaClassificacao = async function (classificacao, contentType) {
 
     let customMessage = JSON.parse(JSON.stringify(configMessages))
 
@@ -44,4 +44,9 @@ const inserirNovaClassificao = async function (classificacao, contentType) {
     } catch (error) {
         return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER
     }
+}
+
+module.exports = {
+
+    inserirNovaClassificacao
 }
