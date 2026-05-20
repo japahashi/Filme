@@ -9,9 +9,9 @@ const insertClassificacao = async function (classificacao) {
     try {
 
         let sql = `insert into tbl_classificacao (
-	classificaco
+	classificacao
 ) values (
-	${classificacao.classificacao}
+	'${classificacao.classificacao}'
 );`
 
         let result = await knexConection.raw(sql)
@@ -34,7 +34,27 @@ const insertClassificacao = async function (classificacao) {
 
 }
 
+const updateClassificacao = async function (classificacao) {
+    try {
+        let sql = `update tbl_classificacao set
+                        classificacao = '${classificacao.classificacao}'
+                    where id = ${classificacao.id};`
+
+let result = await knexConection.raw(sql)
+if(result)
+    return true
+
+else
+    return false
+
+
+} catch (error) {
+    return false
+}
+}
+
 module.exports = {
 
     insertClassificacao,
+    updateClassificacao
 }

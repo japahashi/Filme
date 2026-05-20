@@ -171,6 +171,31 @@ app.post('/v1/senai/locadora/classificacao', bodyParserJSON, async function (req
     response.json(result)
 })
 
+app.get('/v1/senai/locadora/classificacao', async function (request, response) {
+
+    let result = await controllerClassificacao.listarClassificacao()
+
+    response.status(result.status_code)
+    response.json(result)
+
+})
+
+app.put('/v1/senai/locadora/classificacao/:id', bodyParserJSON, async function (request, response) {
+
+    let contentType = request.headers['content-type']
+
+    let id = request.params.id
+
+    let dados = request.body
+
+    let result = await controllerClassificacao.atualizarClassificacao(dados, id, contentType)
+
+    response.status(result.status_code)
+    response.json(result)
+
+})
+
+
 
 
 
