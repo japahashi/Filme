@@ -15,6 +15,7 @@ const configMessages = require('../modulo/configMessages.js')
 const filmeDAO = require('../../model/DAO/filme/filme.js')
 
 const controllerClassificacao = require('../classificacao/controller_classificacao.js')
+const controllerFilmeGenero = require('./controller_filme_genero.js')
 
 //Função para inserir um novo filme
 const inserirNovoFilme = async function (filme, contentType) {
@@ -39,6 +40,24 @@ const inserirNovoFilme = async function (filme, contentType) {
 
                 if (result) {
                     filme.id = result //cria o id no json do filme e adciona o id gerado no dao
+
+                    //Manipulação de dados para Inserir os Generos relacionados ao filme
+
+                    //percorre o array de generos que chegara na requisição pelo objetivo Filme
+                    for(itemFilme of filme.id){
+
+                    let filmeGenero ={
+
+                                    "id_filme": filme.id,
+                                    "id_genero": itemFilme.id
+                                
+                    }
+
+                    let resultFilmeGenero = await controllerFilmeGenero.inserirNovoFilmeGenero(filmeGenero)
+                    console.log(resultFilmeGenero)
+
+                }
+                    
                     customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_CREATED_ITEM.status
                     customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_CREATED_ITEM.status_code
                     customMessage.DEFAULT_MESSAGE.message = customMessage.SUCCESS_CREATED_ITEM.message
@@ -272,8 +291,7 @@ const validarDados = async function (filme) {
     } else if (filme.avaliacao == undefined || isNaN(filme.avaliacao) || filme.avaliacao.length > 3) {
         customMessage.ERROR_BAD_REQUEST.field = '[AVALIAÇÃO] INVÁLIDO'
         return customMessage.ERROR_BAD_REQUEST
-
-    }else if(filme.id_classificacao == undefined || filme.id_classificacao == '' || filme.id_classificacao == null || isNaN(filme.id_classificacao) || filme.id_classificacao <= 0){
+    } else if (filme.id_classificacao == undefined || filme.id_classificacao == '' || filme.id_classificacao == null || isNaN(filme.id_classificacao) || filme.id_classificacao <= 0){
         customMessage.ERROR_BAD_REQUEST.field = '[ID CLASSIFICAÇÂO] INVÁLIDO'
         return customMessage.ERROR_BAD_REQUEST
     } else {

@@ -22,6 +22,27 @@ create table tbl_filme (
     avaliacao decimal(3,2) default null
 );
 
+create table tbl_genero (
+	id int not null auto_increment primary key,
+    genero varchar(20)
+);
+insert into tbl_genero(
+	genero
+) values (
+'Drama'
+);
+
+create table tbl_classificacao (
+	id int not null auto_increment primary key,
+    classificacao varchar(3)
+
+);
+insert into tbl_classificacao (
+	classificacao
+) values (
+	'+10'
+);
+
 #Permite apagar tabela
 #drop database db_filmes_20261_b;
 
@@ -46,8 +67,19 @@ insert into tbl_filme(
 
 select * from tbl_filme order by id desc;
 select * from tbl_filme where id = 35;
+select * from tbl_genero order by id desc;
 
 delete from tbl_filme where id > 0;
 
 drop table tbl_filme;
+
+select * from tbl_filme;
+
+delete from tbl_filme;
+
+alter table tbl_filme
+	add column id_classificacao int not null,
+    add constraint FK_CLASSIFICACAO_FILME
+    foreign key (id_classificacao)
+    references tbl_classificacao(id);
 
