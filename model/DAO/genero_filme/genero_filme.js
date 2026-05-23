@@ -8,7 +8,7 @@ const knexdatabaseConfig = require('../../database_config/knexConfig.js')
 const knexConection = knex(knexdatabaseConfig.development)
 
 
-//Função para inserir um novo gênero no banco de dados
+//Função para inserir um novo registro de genero_filme no banco de dados
 const insertGeneroFilme = async function (generoFilme) {
 
     try {
@@ -17,10 +17,10 @@ const insertGeneroFilme = async function (generoFilme) {
                         id_filme,
                         id_genero
                     ) values (
-                        ${generoFilme.id_filme}
+                        ${generoFilme.id_filme},
                         ${generoFilme.id_genero}
-
                     );`
+        // ✅ CORRIGIDO: vírgula adicionada entre os valores
 
         let result = await knexConection.raw(sql)
 
@@ -43,12 +43,12 @@ const insertGeneroFilme = async function (generoFilme) {
 }
 
 
-//Função para atualizar um gênero existente
+//Função para atualizar um registro existente
 const updateGeneroFilme = async function (generoFilme) {
 
     try {
 
-        let sql = `update tbl_genero set
+        let sql = `update tbl_genero_filme set
                         id_filme = ${generoFilme.id_filme},
                         id_genero = ${generoFilme.id_genero}
                     where id = ${generoFilme.id};`
@@ -72,7 +72,7 @@ const updateGeneroFilme = async function (generoFilme) {
 }
 
 
-//Função para retornar todos os gêneros
+//Função para retornar todos os registros de genero_filme
 const selectAllGeneroFilme = async function () {
 
     try {
@@ -92,7 +92,7 @@ const selectAllGeneroFilme = async function () {
 }
 
 
-//Função para retornar um gênero pelo ID
+//Função para retornar um registro pelo ID
 const selectByIdGeneroFilme = async function (id) {
 
     try {
@@ -117,10 +117,10 @@ const selectGenerosByIdFilme = async function (idFilme) {
 
         let sql = ` select tbl_genero.*
                     from tbl_filme
-                        inner join tbl_filme_genero
-                            on tbl_filme.id = tbl_filme_genero.id_filme
+                        inner join tbl_genero_filme
+                            on tbl_filme.id = tbl_genero_filme.id_filme
                         inner join tbl_genero
-                            on tbl_genero.id = tbl_filme_genero.id_genero
+                            on tbl_genero.id = tbl_genero_filme.id_genero
                         
                     where tbl_filme.id = ${idFilme}`
 
@@ -142,10 +142,10 @@ const selectFilmesByIdGenero = async function (idGenero) {
 
         let sql = ` select tbl_filme.*
                     from tbl_filme
-                        inner join tbl_filme_genero
-                            on tbl_filme.id = tbl_filme_genero.id_filme
+                        inner join tbl_genero_filme
+                            on tbl_filme.id = tbl_genero_filme.id_filme
                         inner join tbl_genero
-                            on tbl_genero.id = tbl_filme_genero.id_genero
+                            on tbl_genero.id = tbl_genero_filme.id_genero
                         
                     where tbl_genero.id = ${idGenero}`
 
@@ -162,7 +162,7 @@ const selectFilmesByIdGenero = async function (idGenero) {
 }
 
 
-//Função para excluir um gênero pelo ID
+//Função para excluir um registro pelo ID
 const deleteGeneroFilme = async function (id) {
 
     try {
