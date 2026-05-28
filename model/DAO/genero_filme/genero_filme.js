@@ -20,7 +20,7 @@ const insertGeneroFilme = async function (generoFilme) {
                         ${generoFilme.id_filme},
                         ${generoFilme.id_genero}
                     );`
-        // ✅ CORRIGIDO: vírgula adicionada entre os valores
+        
 
         let result = await knexConection.raw(sql)
 

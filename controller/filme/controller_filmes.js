@@ -38,7 +38,7 @@ const inserirNovoFilme = async function (filme, contentType) {
                 if (result) {
                     filme.id = result
 
-                    // ✅ CORRIGIDO: itera sobre o array de generos, não sobre filme.id
+                   
                     if (filme.generos && Array.isArray(filme.generos)) {
                         for (let itemGenero of filme.generos) {
                             let filmeGenero = {
@@ -46,7 +46,11 @@ const inserirNovoFilme = async function (filme, contentType) {
                                 "id_genero": itemGenero.id
                             }
                             let resultFilmeGenero = await controllerFilmeGenero.inserirNovoFilmeGenero(filmeGenero)
-                            console.log(resultFilmeGenero)
+                            //Validação para verificar se todos os itens de relacionamento foram inseridos
+                            if(!resultFilmeGenero.status){
+                                return customMessage.SUCCESS_CREATED_ITEM_WARNING//201 com alerta de
+
+                            }
                         }
                     }
 
@@ -224,7 +228,7 @@ const excluirFilme = async function (id) {
             }
 
         } else {
-            // ✅ CORRIGIDO: adicionado return que estava faltando
+           
             return resultBuscarFilme
         }
 
@@ -276,7 +280,6 @@ const tratarDados = async function (filme) {
     filme.capa = filme.capa.replaceAll("'", "")
     filme.data_lancamento = filme.data_lancamento.replaceAll("'", "")
     filme.duracao = filme.duracao.replaceAll("'", "")
-    // ✅ CORRIGIDO: valor e avaliacao são números, convertidos para string antes do replaceAll
     filme.valor = String(filme.valor).replaceAll("'", "")
     if (filme.avaliacao !== undefined && filme.avaliacao !== null) {
         filme.avaliacao = String(filme.avaliacao).replaceAll("'", "")

@@ -1,13 +1,13 @@
 const configMessages = require('../modulo/configMessages.js')
 
-// ✅ CORRIGIDO: nome do DAO corrigido para corresponder ao arquivo genero_filme.js
+
 const generoDAO = require('../../model/DAO/genero_filme/genero_filme.js')
 
 
 const validarDados = async function (filme_genero) {
     let customMessage = JSON.parse(JSON.stringify(configMessages))
 
-    // ✅ CORRIGIDO: lógica de validação reescrita corretamente
+    
     if (filme_genero.id_filme == undefined || filme_genero.id_filme == null || isNaN(filme_genero.id_filme) || filme_genero.id_filme <= 0) {
         customMessage.ERROR_BAD_REQUEST.field = "[ID_FILME] INVÁLIDO"
         return customMessage.ERROR_BAD_REQUEST
@@ -23,14 +23,14 @@ const inserirNovoFilmeGenero = async function (filme_genero) {
 
     let customMessage = JSON.parse(JSON.stringify(configMessages))
     try {
-        // ✅ CORRIGIDO: variável renomeada para não colidir com a função validarDados
+        
         let resultValidar = await validarDados(filme_genero)
 
-        // ✅ CORRIGIDO: variável correta sendo verificada
+        
         if (resultValidar) {
             return resultValidar
         } else {
-            // ✅ CORRIGIDO: usando generoDAO que é o import correto
+            
             let result = await generoDAO.insertGeneroFilme(filme_genero)
             console.log(result)
 
@@ -58,7 +58,7 @@ const listarFilmeGenero = async function () {
     let customMessage = JSON.parse(JSON.stringify(configMessages))
 
     try {
-        // ✅ CORRIGIDO: usando generoDAO
+        
         let result = await generoDAO.selectAllGeneroFilme()
         console.log(result)
 
@@ -95,11 +95,11 @@ const atualizarFilmeGenero = async function (filme_genero, id, contentType) {
 
                 filme_genero.id = Number(id)
 
-                // ✅ CORRIGIDO: usando generoDAO
+                
                 let result = await generoDAO.updateGeneroFilme(filme_genero)
 
                 if (result) {
-                    // ✅ CORRIGIDO: SUCCESS_UPDATE_ITEM (não SUCESS_UPDATE_ITEM)
+                    
                     customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_UPDATE_ITEM.status
                     customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_UPDATE_ITEM.status_code
                     customMessage.DEFAULT_MESSAGE.message = customMessage.SUCCESS_UPDATE_ITEM.message
@@ -113,7 +113,7 @@ const atualizarFilmeGenero = async function (filme_genero, id, contentType) {
                 return validar
             }
         } else {
-            // ✅ CORRIGIDO: retorna o resultado da busca, não ERROR_CONTENT_TYPE
+            
             return resultBuscarGenero
         }
     } catch (error) {
@@ -132,7 +132,7 @@ const buscarFilmeGenero = async function (id) {
             return customMessage.ERROR_BAD_REQUEST
         } else {
 
-            // ✅ CORRIGIDO: usando generoDAO
+            
             let result = await generoDAO.selectByIdGeneroFilme(id)
 
             if (result) {
@@ -165,7 +165,7 @@ const buscarGeneroIdFilme = async function (id_filme) {
             return customMessage.ERROR_BAD_REQUEST
         } else {
 
-            // ✅ CORRIGIDO: passando id_filme (não id) e usando generoDAO
+            
             let result = await generoDAO.selectGenerosByIdFilme(id_filme)
 
             if (result) {
@@ -198,7 +198,7 @@ const buscarFilmesIDGenero = async function (id_Genero) {
             return customMessage.ERROR_BAD_REQUEST
         } else {
 
-            // ✅ CORRIGIDO: usando generoDAO
+            
             let result = await generoDAO.selectFilmesByIdGenero(id_Genero)
 
             if (result) {
@@ -226,7 +226,7 @@ const deletarGenero = async function (id) {
     let customMessage = JSON.parse(JSON.stringify(configMessages))
 
     try {
-        // ✅ CORRIGIDO: usando buscarFilmeGenero (função correta) e variável consistente
+        
         let resultBuscarFilmeGenero = await buscarFilmeGenero(id)
 
         if (resultBuscarFilmeGenero.status) {

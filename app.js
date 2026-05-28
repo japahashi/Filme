@@ -7,7 +7,7 @@ const bodyParserJSON = bodyParser.json()
 const app = express()
 
 const corsOptions = {
-    // ✅ CORRIGIDO: origin como string '*' em vez de array ['*']
+    
     origin: '*',
     methods: 'GET, POST, PUT, DELETE, OPTIONS',
     allowedHeaders: ['Content-type', 'Authorization']
